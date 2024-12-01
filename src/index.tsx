@@ -38,6 +38,20 @@ app.delete("/posts/:id", (c) => {
   return c.text(`${c.req.param("id")} is deleted!`);
 });
 
+const View = () => {
+  return (
+    <html>
+      <body>
+        <h1>Hello Hono!</h1>
+      </body>
+    </html>
+  );
+};
+
+app.get("/page", (c) => {
+  return c.html(<View />);
+});
+
 const port = 3000;
 console.log(`Server is running on http://localhost:${port}`);
 
