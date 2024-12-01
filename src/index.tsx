@@ -1,10 +1,19 @@
 import { serve } from "@hono/node-server";
 import console from "console";
+import * as dotenv from "dotenv";
 import { Hono } from "hono";
 import { basicAuth } from "hono/basic-auth";
 import { prettyJSON } from "hono/pretty-json";
 
-const app = new Hono();
+// .env ファイルを読み込む
+dotenv.config();
+
+type Bindings = {
+  USERNAME: string;
+  PASSWORD: string;
+};
+
+const app = new Hono<{ Bindings: Bindings }>();
 
 app.use("*", prettyJSON());
 
@@ -53,13 +62,27 @@ app.get("/page", (c) => {
   return c.html(<View />);
 });
 
-app.use(
-  "/admin/*",
-  basicAuth({
-    username: "admin",
-    password: "password",
-  })
-);
+// app.use(
+//   "/admin/*",
+//   basicAuth({
+//     username: "admin",
+//     password: "password",
+//   })
+// );
+app.get("/admin/*", (c, next) => {
+  console.log({
+    env: process.env,
+    username: process.env.USERNAME as string,
+    password: process.env.PASSWORD as string,
+  });
+
+  const auth = basicAuth({
+    username: process.env.USERNAME as string,
+    password: process.env.PASSWORD as string,
+  });
+  return auth(c, next);
+});
+
 app.get("/admin", (c) => {
   return c.text("Admin page");
 });
