@@ -1,6 +1,7 @@
 import { serve } from "@hono/node-server";
 import console from "console";
 import { Hono } from "hono";
+import { basicAuth } from "hono/basic-auth";
 import { prettyJSON } from "hono/pretty-json";
 
 const app = new Hono();
@@ -50,6 +51,17 @@ const View = () => {
 
 app.get("/page", (c) => {
   return c.html(<View />);
+});
+
+app.use(
+  "/admin/*",
+  basicAuth({
+    username: "admin",
+    password: "password",
+  })
+);
+app.get("/admin", (c) => {
+  return c.text("Admin page");
 });
 
 const port = 3000;
