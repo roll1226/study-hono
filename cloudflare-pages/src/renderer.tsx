@@ -8,6 +8,7 @@ export const renderer = jsxRenderer(({ children }) => {
       </head>
       <header>ヘッダー部分</header>
       <body>{children}</body>
+      <footer>フッター部分</footer>
     </html>
   );
 });
