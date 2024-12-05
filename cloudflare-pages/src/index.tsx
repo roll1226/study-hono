@@ -14,4 +14,9 @@ app.get("/", (c) => {
   return c.render(<h1>Hello! {name}</h1>);
 });
 
+app.get("/user/:name", (c) => {
+  const name = c.req.param("name");
+  return c.render(<h1>Hello! {name}</h1>);
+});
+
 export default app;
