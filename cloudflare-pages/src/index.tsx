@@ -29,4 +29,15 @@ app.get("/user/:name/:age", (c) => {
   );
 });
 
+// クエリパラメータ
+app.get("/post", (c) => {
+  const name = c.req.query("name");
+  const age = c.req.query("age");
+  return c.render(
+    <h1>
+      Hello! {name} ({age})
+    </h1>
+  );
+});
+
 export default app;
