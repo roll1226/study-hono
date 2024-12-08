@@ -36,6 +36,20 @@ app.get("/post", (c) => {
   return c.render(
     <h1>
       Hello! {name} ({age})
+      <form action="/post/new" method="post">
+        <input type="text" name="name" />
+        <input type="number" name="age" />
+        <button type="submit">送信</button>
+      </form>
+    </h1>
+  );
+});
+
+app.post("/post/new", async (c) => {
+  const body = await c.req.formData();
+  return c.render(
+    <h1>
+      Hello! {body.get("name")} ({body.get("age")})
     </h1>
   );
 });
